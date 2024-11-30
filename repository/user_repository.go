@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"golang-chapter-39/LA-Chapter-39H-I/models"
+	"project-voucher-team3/models"
 
 	"gorm.io/gorm"
 )

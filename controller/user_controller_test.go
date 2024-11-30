@@ -2,10 +2,10 @@ package controller
 
 import (
 	"encoding/json"
-	"golang-chapter-39/LA-Chapter-39H-I/models"
-	"golang-chapter-39/LA-Chapter-39H-I/service"
 	"net/http"
 	"net/http/httptest"
+	"project-voucher-team3/models"
+	"project-voucher-team3/service"
 	"testing"
 
 	"github.com/gin-gonic/gin"
@@ -39,9 +39,9 @@ func TestGetUserSuccess(t *testing.T) {
 	controller.GetUser(c)
 
 	assert.Equal(t, http.StatusOK, w.Code)
-	var response HTTPResponse
+	// var response HTTPResponse
 	json.Unmarshal(w.Body.Bytes(), &response)
-	assert.True(t, response.Status)
+	assert.True(t, response.Success)
 	assert.Equal(t, "User retrieved successfully", response.Description)
 
 	// Casting response.Data to map to access the fields
@@ -69,9 +69,9 @@ func TestGetUserNotFound(t *testing.T) {
 	controller.GetUser(c)
 
 	assert.Equal(t, http.StatusNotFound, w.Code)
-	var response HTTPResponse
+	// var response HTTPResponse
 	json.Unmarshal(w.Body.Bytes(), &response)
-	assert.False(t, response.Status)
+	assert.False(t, response.Success)
 	assert.Equal(t, "NOT_FOUND", response.ErrorCode)
 }
 
@@ -91,8 +91,8 @@ func TestGetUserInvalidID(t *testing.T) {
 	controller.GetUser(c)
 
 	assert.Equal(t, http.StatusBadRequest, w.Code)
-	var response HTTPResponse
+	// var response HTTPResponse
 	json.Unmarshal(w.Body.Bytes(), &response)
-	assert.False(t, response.Status)
+	assert.False(t, response.Success)
 	assert.Equal(t, "INVALID_ID", response.ErrorCode)
 }

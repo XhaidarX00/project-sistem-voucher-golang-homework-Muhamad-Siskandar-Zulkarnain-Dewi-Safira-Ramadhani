@@ -1,9 +1,9 @@
 package main
 
 import (
-	"golang-chapter-39/LA-Chapter-39H-I/infra"
-	"golang-chapter-39/LA-Chapter-39H-I/routes"
 	"log"
+	"project-voucher-team3/infra"
+	"project-voucher-team3/routes"
 )
 
 func main() {

@@ -1,17 +1,21 @@
 package controller
 
 import (
-	"golang-chapter-39/LA-Chapter-39H-I/service"
+	"project-voucher-team3/service"
 
 	"go.uber.org/zap"
 )
 
 type Controller struct {
-	User UserController
+	User    UserController
+	Redeem  RedeemController
+	Voucher VoucherController
 }
 
 func NewController(service service.Service, logger *zap.Logger) *Controller {
 	return &Controller{
-		User: *NewUserController(service.User, logger),
+		User:    *NewUserController(service.User, logger),
+		Redeem:  *NewRedeemController(service.Reedem, logger),
+		Voucher: *NewVoucherController(service.Voucher, logger),
 	}
 }

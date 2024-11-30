@@ -1,8 +1,8 @@
 package service
 
 import (
-	"golang-chapter-39/LA-Chapter-39H-I/models"
-	"golang-chapter-39/LA-Chapter-39H-I/repository"
+	"project-voucher-team3/models"
+	"project-voucher-team3/repository"
 )
 
 type UserService interface {
