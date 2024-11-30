@@ -2,9 +2,9 @@ package database
 
 import (
 	"fmt"
-	"golang-chapter-39/LA-Chapter-39H-I/config"
 	"log"
 	"os"
+	"project-voucher-team3/config"
 	"time"
 
 	"gorm.io/driver/postgres"
@@ -34,9 +34,13 @@ func ConnectDB(cfg config.Config) (*gorm.DB, error) {
 	}
 
 	// Call Migrate function to auto-migrate database schemas
-	if err := Migrate(db); err != nil {
-		return nil, fmt.Errorf("failed to migrate database: %v", err)
-	}
+	// if err := Migrate(db); err != nil {
+	// 	return nil, fmt.Errorf("failed to migrate database: %v", err)
+	// }
+
+	// if err := SeedDatabase(db); err != nil {
+	// 	return nil, fmt.Errorf("failed to seed database: %v", err)
+	// }
 
 	return db, nil
 }

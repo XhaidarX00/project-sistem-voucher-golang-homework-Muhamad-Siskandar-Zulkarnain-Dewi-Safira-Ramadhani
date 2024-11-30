@@ -1,12 +1,12 @@
 package infra
 
 import (
-	"golang-chapter-39/LA-Chapter-39H-I/config"
-	"golang-chapter-39/LA-Chapter-39H-I/controller"
-	"golang-chapter-39/LA-Chapter-39H-I/database"
-	"golang-chapter-39/LA-Chapter-39H-I/log"
-	"golang-chapter-39/LA-Chapter-39H-I/repository"
-	"golang-chapter-39/LA-Chapter-39H-I/service"
+	"project-voucher-team3/config"
+	"project-voucher-team3/controller"
+	"project-voucher-team3/database"
+	"project-voucher-team3/log"
+	"project-voucher-team3/repository"
+	"project-voucher-team3/service"
 
 	"go.uber.org/zap"
 )
@@ -45,7 +45,7 @@ func NewServiceContext() (*ServiceContext, error) {
 	repository := repository.NewRepository(db)
 
 	// instance service
-	service := service.NewService(repository)
+	service := service.NewService(repository, db)
 
 	// instance controller
 	Ctl := controller.NewController(service, log)

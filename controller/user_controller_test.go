@@ -2,10 +2,10 @@ package controller
 
 import (
 	"encoding/json"
-	"golang-chapter-39/LA-Chapter-39H-I/models"
-	"golang-chapter-39/LA-Chapter-39H-I/service"
 	"net/http"
 	"net/http/httptest"
+	"project-voucher-team3/models"
+	"project-voucher-team3/service"
 	"testing"
 
 	"github.com/gin-gonic/gin"

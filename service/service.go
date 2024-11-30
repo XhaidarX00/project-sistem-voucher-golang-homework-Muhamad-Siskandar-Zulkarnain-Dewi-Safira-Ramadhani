@@ -1,13 +1,19 @@
 package service
 
-import "golang-chapter-39/LA-Chapter-39H-I/repository"
+import (
+	"project-voucher-team3/repository"
+
+	"gorm.io/gorm"
+)
 
 type Service struct {
-	User UserService
+	User   UserService
+	Reedem RedeemService
 }
 
-func NewService(repo repository.Repository) Service {
+func NewService(repo repository.Repository, db *gorm.DB) Service {
 	return Service{
-		User: NewUserService(repo.User),
+		User:   NewUserService(repo.User),
+		Reedem: NewRedeemService(repo.Reedem),
 	}
 }
