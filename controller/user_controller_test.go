@@ -39,7 +39,7 @@ func TestGetUserSuccess(t *testing.T) {
 	controller.GetUser(c)
 
 	assert.Equal(t, http.StatusOK, w.Code)
-	var response HTTPResponse
+	// var response HTTPResponse
 	json.Unmarshal(w.Body.Bytes(), &response)
 	assert.True(t, response.Success)
 	assert.Equal(t, "User retrieved successfully", response.Description)
@@ -69,7 +69,7 @@ func TestGetUserNotFound(t *testing.T) {
 	controller.GetUser(c)
 
 	assert.Equal(t, http.StatusNotFound, w.Code)
-	var response HTTPResponse
+	// var response HTTPResponse
 	json.Unmarshal(w.Body.Bytes(), &response)
 	assert.False(t, response.Success)
 	assert.Equal(t, "NOT_FOUND", response.ErrorCode)
@@ -91,7 +91,7 @@ func TestGetUserInvalidID(t *testing.T) {
 	controller.GetUser(c)
 
 	assert.Equal(t, http.StatusBadRequest, w.Code)
-	var response HTTPResponse
+	// var response HTTPResponse
 	json.Unmarshal(w.Body.Bytes(), &response)
 	assert.False(t, response.Success)
 	assert.Equal(t, "INVALID_ID", response.ErrorCode)

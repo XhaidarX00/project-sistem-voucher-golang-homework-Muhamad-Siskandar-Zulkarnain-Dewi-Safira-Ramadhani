@@ -1,7 +1,6 @@
 package models
 
 import (
-	"project-voucher-team3/utils"
 	"time"
 )
 
@@ -25,12 +24,13 @@ type Voucher struct {
 }
 
 type VoucherDTO struct {
-	VoucherCode       string           `json:"voucher_code"`
-	TotalTransaction  float64          `json:"total_transactions"`
-	TotalShippingCost float64          `json:"total_shipping_cost"`
-	TransactionDate   utils.CustomDate `json:"transaction_date"`
-	PaymentMethod     string           `json:"payment_method"`
-	Area              string           `json:"area"`
+	VoucherCode             string    `json:"voucher_code"`
+	TotalTransaction        float64   `json:"total_transactions"`
+	TotalShippingCost       float64   `json:"total_shipping_cost"`
+	TransactionDate         string    `json:"transaction_date"`
+	FormatedTransactionDate time.Time `json:"-"`
+	PaymentMethod           string    `json:"payment_method"`
+	Area                    string    `json:"area"`
 }
 
 type ValidateVoucherResponse struct {
@@ -38,4 +38,6 @@ type ValidateVoucherResponse struct {
 	TotalShippingCost float64 `json:"total_shipping_cost"`
 	VoucherStatus     string  `json:"voucher_status"`
 	BenefitAmount     float64 `json:"benefit_amount"`
+	VoucherCode       string  `json:"-"`
+	VoucherID         int     `json:"-"`
 }

@@ -26,8 +26,5 @@ func (repo *VoucherRepository) GetVoucherByCode(voucherCode string) (models.Vouc
 	if err == gorm.ErrRecordNotFound {
 		return voucher, nil
 	}
-	if err != nil {
-		return voucher, err
-	}
 	return voucher, err
 }

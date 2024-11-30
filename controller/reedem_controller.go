@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"project-voucher-team3/models"
 	"project-voucher-team3/service"
+	"project-voucher-team3/utils"
 
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
@@ -24,7 +25,7 @@ func (ctrl *RedeemController) GetUserRedeemVoucherController(c *gin.Context) {
 	voucherType := c.Param("vourcher-type")
 	if voucherType == "" {
 		ctrl.logger.Error("voucher type is empty")
-		responseError(c, "EMPTY_PARAM", "voucher type is empty", http.StatusBadRequest)
+		utils.ResponseError(c, "EMPTY_PARAM", "voucher type is empty", http.StatusBadRequest)
 		return
 	}
 	voucherFilter := models.Voucher{
@@ -33,14 +34,14 @@ func (ctrl *RedeemController) GetUserRedeemVoucherController(c *gin.Context) {
 	userRedeem, err := ctrl.service.GetAllUserRedeems(userID, voucherFilter)
 	if err != nil {
 		ctrl.logger.Error("Failed to get user redeem vouchers", zap.Error(err))
-		responseError(c, "INTERNAL_SERVER_ERROR", err.Error(), http.StatusInternalServerError)
+		utils.ResponseError(c, "INTERNAL_SERVER_ERROR", err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	if len(userRedeem) == 0 {
 		ctrl.logger.Info("User has no redeem vouchers")
-		responseOK(c, userRedeem, "user has no redeem voucher")
+		utils.ResponseOK(c, userRedeem, "user has no redeem voucher")
 		return
 	}
-	responseOK(c, userRedeem, "user redeem successfully retrieved")
+	utils.ResponseOK(c, userRedeem, "user redeem successfully retrieved")
 }
