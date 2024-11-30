@@ -2,18 +2,18 @@ package service
 
 import (
 	"project-voucher-team3/repository"
-
-	"gorm.io/gorm"
 )
 
 type Service struct {
-	User   UserService
-	Reedem RedeemService
+	User    UserService
+	Reedem  RedeemService
+	Voucher VoucherService
 }
 
-func NewService(repo repository.Repository, db *gorm.DB) Service {
+func NewService(repo repository.Repository) Service {
 	return Service{
-		User:   NewUserService(repo.User),
-		Reedem: NewRedeemService(repo.Reedem),
+		User:    NewUserService(repo.User),
+		Reedem:  NewRedeemService(repo.Reedem),
+		Voucher: NewVoucherService(repo.Voucher),
 	}
 }

@@ -1,6 +1,8 @@
 package database
 
 import (
+	"fmt"
+	"log"
 	"project-voucher-team3/models"
 	"time"
 
@@ -20,6 +22,15 @@ func SeedDatabase(db *gorm.DB) error {
 }
 
 func voucherSeeder(db *gorm.DB) error {
+	var count int64
+	if err := db.Model(&models.Voucher{}).Count(&count).Error; err != nil {
+		return fmt.Errorf("failed to count existing shipping data: %w", err)
+	}
+
+	if count > 0 {
+		log.Println("Shipping data already initialized, skipping seeder.")
+		return nil
+	}
 	// Seed Vouchers
 	vouchers := []models.Voucher{
 		{
@@ -28,7 +39,7 @@ func voucherSeeder(db *gorm.DB) error {
 			VoucherType:     "ecommerce",
 			Description:     "Free shipping for orders in Java island.",
 			VoucherCategory: "free_shipping",
-			DiscountAmount:  0,
+			DiscountAmount:  10.00,
 			MinPurchase:     50000,
 			PaymentMethod:   "credit_card",
 			StartDate:       time.Date(2024, 1, 1, 0, 0, 0, 0, time.UTC),
@@ -41,7 +52,7 @@ func voucherSeeder(db *gorm.DB) error {
 			VoucherType:     "ecommerce",
 			Description:     "10% discount on electronics above Rp500,000.",
 			VoucherCategory: "discount",
-			DiscountAmount:  10,
+			DiscountAmount:  10.00,
 			MinPurchase:     500000,
 			PaymentMethod:   "debit_card",
 			StartDate:       time.Date(2024, 2, 1, 0, 0, 0, 0, time.UTC),
@@ -57,6 +68,15 @@ func voucherSeeder(db *gorm.DB) error {
 
 func redeemSeeder(db *gorm.DB) error {
 	// Fetch Voucher IDs
+	var count int64
+	if err := db.Model(&models.Redeem{}).Count(&count).Error; err != nil {
+		return fmt.Errorf("failed to count existing shipping data: %w", err)
+	}
+
+	if count > 0 {
+		log.Println("Shipping data already initialized, skipping seeder.")
+		return nil
+	}
 	var voucher1, voucher2 models.Voucher
 	if err := db.First(&voucher1, "voucher_code = ?", "ELEC10").Error; err != nil {
 		return err
@@ -74,7 +94,7 @@ func redeemSeeder(db *gorm.DB) error {
 			RedeemDate:  time.Date(2024, 3, 15, 10, 30, 0, 0, time.UTC),
 		},
 		{
-			UserID:      2,
+			UserID:      1,
 			VoucherID:   voucher2.ID,
 			VoucherCode: "FREESHIPJAVA",
 			RedeemDate:  time.Date(2024, 4, 10, 12, 0, 0, 0, time.UTC),

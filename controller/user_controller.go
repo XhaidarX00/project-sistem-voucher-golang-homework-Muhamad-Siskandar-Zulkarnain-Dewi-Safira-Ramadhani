@@ -11,7 +11,7 @@ import (
 )
 
 type HTTPResponse struct {
-	Status      bool        `json:"status"`
+	Success     bool        `json:"success"`
 	ErrorCode   string      `json:"error_code,omitempty"`
 	Description string      `json:"description,omitempty"`
 	Data        interface{} `json:"data,omitempty"`
@@ -19,7 +19,7 @@ type HTTPResponse struct {
 
 func responseOK(c *gin.Context, data interface{}, description string) {
 	c.JSON(http.StatusOK, HTTPResponse{
-		Status:      true,
+		Success:     true,
 		Description: description,
 		Data:        data,
 	})
@@ -27,7 +27,7 @@ func responseOK(c *gin.Context, data interface{}, description string) {
 
 func responseError(c *gin.Context, errorCode string, description string, httpStatusCode int) {
 	c.JSON(httpStatusCode, HTTPResponse{
-		Status:      false,
+		Success:     false,
 		ErrorCode:   errorCode,
 		Description: description,
 	})

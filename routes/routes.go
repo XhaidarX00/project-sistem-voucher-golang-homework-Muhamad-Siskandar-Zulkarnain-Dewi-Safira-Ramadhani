@@ -14,12 +14,19 @@ func NewRoutes(ctx infra.ServiceContext) *gin.Engine {
 	// r.PUT("/users/:id", ctx.Ctl.User.UpdateUser)
 	// r.DELETE("/users/:id", ctx.Ctl.User.DeleteUser)
 
-	reedemRoutes(r, ctx)
+	redeemRoutes(r, ctx)
+	vourcherRouter(r, ctx)
 	return r
 }
 
-func reedemRoutes(r *gin.Engine, ctx infra.ServiceContext) {
-	reedemGroup := r.Group("/reedem")
+func redeemRoutes(r *gin.Engine, ctx infra.ServiceContext) {
+	redeemGroup := r.Group("/redeem")
 
-	reedemGroup.GET("/:vourcher-type", ctx.Ctl.Redeem.GetUserRedeemVoucherController)
+	redeemGroup.GET("/:vourcher-type", ctx.Ctl.Redeem.GetUserRedeemVoucherController)
+}
+
+func vourcherRouter(r *gin.Engine, ctx infra.ServiceContext) {
+	voucherGroup := r.Group("/voucher")
+
+	voucherGroup.GET("/validate", ctx.Ctl.Voucher.ValidateVoucherController)
 }
