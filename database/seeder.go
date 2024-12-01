@@ -1,6 +1,7 @@
 package database
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"project-voucher-team3/models"
@@ -45,6 +46,7 @@ func voucherSeeder(db *gorm.DB) error {
 			StartDate:       time.Date(2024, 1, 1, 0, 0, 0, 0, time.UTC),
 			EndDate:         time.Date(2024, 12, 31, 23, 59, 59, 0, time.UTC),
 			ApplicableAreas: `["Jakarta", "Surabaya", "Bandung"]`,
+			MinRatePoint:    50,
 		},
 		{
 			VoucherName:     "10% Off Electronics",
@@ -58,6 +60,7 @@ func voucherSeeder(db *gorm.DB) error {
 			StartDate:       time.Date(2024, 2, 1, 0, 0, 0, 0, time.UTC),
 			EndDate:         time.Date(2024, 11, 30, 23, 59, 59, 0, time.UTC),
 			ApplicableAreas: `["Jakarta", "Medan"]`,
+			MinRatePoint:    100,
 		},
 	}
 	if err := db.Create(&vouchers).Error; err != nil {
@@ -103,5 +106,39 @@ func redeemSeeder(db *gorm.DB) error {
 	if err := db.Create(&redeems).Error; err != nil {
 		return err
 	}
+	return nil
+}
+
+func SeedUsers(db *gorm.DB) error {
+	// Cek apakah data sudah ada
+	if err := db.First(&models.User{}).Error; err == nil {
+		return errors.New("data is not null, skiping add data users")
+	}
+
+	users := []models.User{
+		{
+			Name:     "John Doe",
+			Email:    "john.doe@example.com",
+			Password: "password123",
+			Points:   200,
+		},
+		{
+			Name:     "Jane Smith",
+			Email:    "jane.smith@example.com",
+			Password: "securepassword",
+			Points:   150,
+		},
+		{
+			Name:     "Michael Johnson",
+			Email:    "michael.johnson@example.com",
+			Password: "michaelpassword",
+			Points:   50,
+		},
+	}
+
+	if err := db.Create(&users).Error; err != nil {
+		log.Fatal("Error seeding users: ", err)
+	}
+
 	return nil
 }

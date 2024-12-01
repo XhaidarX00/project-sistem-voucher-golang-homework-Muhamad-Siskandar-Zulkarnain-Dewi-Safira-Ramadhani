@@ -7,6 +7,7 @@ import (
 
 type RedeemService interface {
 	GetAllUserRedeems(userID int, voucherFilter models.Voucher) ([]models.Redeem, error)
+	RedeemVoucher(user *models.User, voucherID int) (models.Redeem, error)
 }
 
 type redeemService struct {
@@ -19,4 +20,8 @@ func NewRedeemService(repo repository.ReedemRepository) RedeemService {
 
 func (s *redeemService) GetAllUserRedeems(userID int, voucherFilter models.Voucher) ([]models.Redeem, error) {
 	return s.Repo.GetUserRedeem(userID, voucherFilter)
+}
+
+func (s *redeemService) RedeemVoucher(user *models.User, voucherID int) (models.Redeem, error) {
+	return s.Repo.RedeemVoucher(user, voucherID)
 }

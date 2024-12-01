@@ -1,8 +1,18 @@
 package models
 
+import (
+	"time"
+)
+
 type User struct {
-	ID       uint   `gorm:"primaryKey"`
-	Name     string `gorm:"size:100"`
-	Email    string `gorm:"uniqueIndex;size:100"`
-	Password string `gorm:"size:100"`
+	ID        int       `gorm:"primaryKey;autoIncrement"`
+	Name      string    `gorm:"type:varchar(100);not null"`
+	Email     string    `gorm:"type:varchar(100);uniqueIndex;not null"`
+	Password  string    `gorm:"type:varchar(255);not null"`
+	Points    int       `gorm:"type:int;default:0"`
+	CreatedAt time.Time `gorm:"autoCreateTime"`
+	UpdatedAt time.Time `gorm:"autoUpdateTime"`
+
+	// Relationships
+	Redeems []Redeem `gorm:"foreignKey:UserID"`
 }

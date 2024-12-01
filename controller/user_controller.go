@@ -44,7 +44,7 @@ func (ctrl *UserController) GetUser(c *gin.Context) {
 		return
 	}
 
-	user, err := ctrl.service.GetUser(uint(id))
+	user, err := ctrl.service.GetUser(id)
 	if err != nil {
 		ctrl.logger.Error("User not found", zap.Error(err))
 		// responseError(c, "NOT_FOUND", "User not found", http.StatusNotFound)
@@ -69,7 +69,7 @@ func (ctrl *UserController) UpdateUser(c *gin.Context) {
 		// responseError(c, "BIND_ERROR", err.Error(), http.StatusBadRequest)
 		return
 	}
-	user.ID = uint(id)
+	user.ID = id
 
 	if err := ctrl.service.UpdateUser(user); err != nil {
 		ctrl.logger.Error("Failed to update user", zap.Error(err))

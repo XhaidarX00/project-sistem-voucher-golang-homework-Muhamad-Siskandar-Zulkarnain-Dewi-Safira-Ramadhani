@@ -42,6 +42,14 @@ func ConnectDB(cfg config.Config) (*gorm.DB, error) {
 	// 	return nil, fmt.Errorf("failed to seed database: %v", err)
 	// }
 
+	// if err := MigrateUser(db); err != nil {
+	// 	return nil, fmt.Errorf("failed to migrate database users : %v", err)
+	// }
+
+	// if err := SeedUsers(db); err != nil {
+	// 	return nil, fmt.Errorf("failed to seed database users : %v", err)
+	// }
+
 	return db, nil
 }
 

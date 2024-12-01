@@ -15,7 +15,7 @@ type Controller struct {
 func NewController(service service.Service, logger *zap.Logger) *Controller {
 	return &Controller{
 		User:    *NewUserController(service.User, logger),
-		Redeem:  *NewRedeemController(service.Reedem, logger),
+		Redeem:  *NewRedeemController(service.Reedem, service.User, logger),
 		Voucher: *NewVoucherController(service.Voucher, logger),
 	}
 }

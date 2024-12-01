@@ -7,7 +7,7 @@ import (
 
 type UserService interface {
 	CreateUser(user models.User) error
-	GetUser(id uint) (models.User, error)
+	GetUser(id int) (models.User, error)
 	UpdateUser(user models.User) error
 	DeleteUser(id uint) error
 }
@@ -24,7 +24,7 @@ func (s *userService) CreateUser(user models.User) error {
 	return s.repo.CreateUser(user)
 }
 
-func (s *userService) GetUser(id uint) (models.User, error) {
+func (s *userService) GetUser(id int) (models.User, error) {
 	return s.repo.GetUser(id)
 }
 

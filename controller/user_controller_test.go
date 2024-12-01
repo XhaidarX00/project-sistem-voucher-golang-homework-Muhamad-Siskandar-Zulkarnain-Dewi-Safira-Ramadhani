@@ -6,12 +6,15 @@ import (
 	"net/http/httptest"
 	"project-voucher-team3/models"
 	"project-voucher-team3/service"
+	"project-voucher-team3/utils"
 	"testing"
 
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/zap"
 )
+
+var response utils.HTTPResponse
 
 // Utility function to create a controller instance
 func setupTestController() (*UserController, *service.MockUserService, *zap.Logger) {

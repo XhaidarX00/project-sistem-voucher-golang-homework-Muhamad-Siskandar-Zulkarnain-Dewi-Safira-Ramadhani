@@ -67,3 +67,14 @@ func Migrate(db *gorm.DB) error {
 
 	return nil
 }
+
+func MigrateUser(db *gorm.DB) error {
+	// Melakukan migrasi untuk tabel Users
+	err := db.AutoMigrate(&models.User{})
+	if err != nil {
+		log.Fatalf("Failed to migrate User table: %v", err)
+		return err
+	}
+	log.Println("User table migrated successfully")
+	return nil
+}

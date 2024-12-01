@@ -18,7 +18,7 @@ func (r *UserRepository) CreateUser(user models.User) error {
 	return r.db.Create(&user).Error
 }
 
-func (r *UserRepository) GetUser(id uint) (models.User, error) {
+func (r *UserRepository) GetUser(id int) (models.User, error) {
 	var user models.User
 	err := r.db.First(&user, id).Error
 	return user, err

@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"errors"
 	"strings"
 	"time"
 )
@@ -25,4 +26,12 @@ func (cd CustomDate) MarshalJSON() ([]byte, error) {
 
 func (cd CustomDate) ToTime() time.Time {
 	return time.Time(cd)
+}
+
+func TimeDateParse(dateStr string) (time.Time, error) {
+	parsedTime, err := time.Parse(CustomDateFormat, dateStr)
+	if err != nil {
+		return time.Time{}, errors.New("invalid date format, expected YYYY-MM-DD")
+	}
+	return parsedTime, nil
 }

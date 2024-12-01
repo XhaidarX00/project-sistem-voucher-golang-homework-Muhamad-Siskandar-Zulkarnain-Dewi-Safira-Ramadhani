@@ -10,6 +10,11 @@ import (
 
 type VoucherService interface {
 	ValidateVoucher(voucherInput models.VoucherDTO) (*models.ValidateVoucherResponse, error)
+	CreateVoucher(voucher *models.Voucher) error
+	DeleteVoucher(id int) error
+	UpdateVoucher(voucher *models.Voucher) error
+	GetVouchers(filter map[string]interface{}) ([]models.Voucher, error)
+	GetVoucherWithMinRatePoint(ratePoint int) ([]map[string]interface{}, error)
 }
 
 type voucherService struct {
@@ -34,4 +39,24 @@ func (s *voucherService) ValidateVoucher(voucherInput models.VoucherDTO) (*model
 	voucherInput.FormatedTransactionDate = parsedTime
 	result, err := utils.ValidateVoucher(voucherInput, voucher)
 	return &result, err
+}
+
+func (s *voucherService) CreateVoucher(voucher *models.Voucher) error {
+	return s.Repo.CreateVoucher(voucher)
+}
+
+func (s *voucherService) DeleteVoucher(id int) error {
+	return s.Repo.DeleteVoucher(id)
+}
+
+func (s *voucherService) UpdateVoucher(voucher *models.Voucher) error {
+	return s.Repo.UpdateVoucher(voucher)
+}
+
+func (s *voucherService) GetVouchers(filter map[string]interface{}) ([]models.Voucher, error) {
+	return s.Repo.GetVouchers(filter)
+}
+
+func (s *voucherService) GetVoucherWithMinRatePoint(ratePoint int) ([]map[string]interface{}, error) {
+	return s.Repo.GetVoucherWithMinRatePoint(ratePoint)
 }

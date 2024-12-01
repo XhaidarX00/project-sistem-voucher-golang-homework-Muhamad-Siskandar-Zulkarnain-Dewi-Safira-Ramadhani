@@ -21,6 +21,22 @@ type Voucher struct {
 	// Relationships
 	Redeems []Redeem `gorm:"foreignKey:VoucherID"`
 	// Usages  []Usage  `gorm:"foreignKey:VoucherID"`
+
+	MinRatePoint int `gorm:"type:integer" json:"min_rate_point"`
+}
+
+type VoucherWithStatus struct {
+	Voucher
+	IsActive bool `json:"is_active"`
+}
+
+func (v *Voucher) IsActive() bool {
+	now := time.Now()
+
+	if now.After(v.StartDate) && now.Before(v.EndDate.Add(24*time.Hour)) {
+		return true
+	}
+	return false
 }
 
 type VoucherDTO struct {
