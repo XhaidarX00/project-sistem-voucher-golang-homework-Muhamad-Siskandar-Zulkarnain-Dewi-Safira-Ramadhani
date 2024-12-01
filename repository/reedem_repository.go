@@ -8,15 +8,15 @@ import (
 	"gorm.io/gorm"
 )
 
-type ReedemRepository struct {
+type RedeemRepository struct {
 	DB *gorm.DB
 }
 
-func NewReedemRepository(db *gorm.DB) *ReedemRepository {
-	return &ReedemRepository{db}
+func NewRedeemRepository(db *gorm.DB) *RedeemRepository {
+	return &RedeemRepository{db}
 }
 
-func (repo *ReedemRepository) GetUserRedeem(userID int, voucherFilter models.Voucher) ([]models.Redeem, error) {
+func (repo *RedeemRepository) GetUserRedeem(userID int, voucherFilter models.Voucher) ([]models.Redeem, error) {
 	var redeems []models.Redeem
 
 	err := repo.DB.Preload("Voucher", "voucher_type = ?", voucherFilter.VoucherType).

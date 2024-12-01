@@ -17,6 +17,7 @@ type Voucher struct {
 	StartDate       time.Time `gorm:"type:date" json:"start_date"`
 	EndDate         time.Time `gorm:"type:date" json:"end_date"`
 	ApplicableAreas string    `gorm:"type:jsonb" json:"applicable_areas"`
+	Quantity        int       `gorm:"type:int" json:"quantity"`
 
 	// Relationships
 	Redeems []Redeem `gorm:"foreignKey:VoucherID"`

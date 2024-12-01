@@ -16,6 +16,7 @@ func NewRoutes(ctx infra.ServiceContext) *gin.Engine {
 
 	redeemRoutes(r, ctx)
 	vourcherRouter(r, ctx)
+	usageRouter(r, ctx)
 	return r
 }
 
@@ -23,7 +24,7 @@ func redeemRoutes(r *gin.Engine, ctx infra.ServiceContext) {
 	redeemGroup := r.Group("/redeem")
 
 	redeemGroup.GET("/user/:id/:voucher_id", ctx.Ctl.Redeem.RedeemVoucher)
-	redeemGroup.GET("/:vourcher-type", ctx.Ctl.Redeem.GetUserRedeemVoucherController)
+	redeemGroup.GET("/:user_id/:vourcher_type", ctx.Ctl.Redeem.GetUserRedeemByTypeVoucherController)
 }
 
 func vourcherRouter(r *gin.Engine, ctx infra.ServiceContext) {
@@ -36,4 +37,10 @@ func vourcherRouter(r *gin.Engine, ctx infra.ServiceContext) {
 	voucherGroup.PUT("/:id", ctx.Ctl.Voucher.UpdateVoucher)
 	voucherGroup.GET("/", ctx.Ctl.Voucher.GetVouchers)
 	voucherGroup.GET("/point/:ratePoint", ctx.Ctl.Voucher.GetVoucherWithMinRatePoint)
+}
+
+func usageRouter(r *gin.Engine, ctx infra.ServiceContext) {
+	usageGroup := r.Group("/usage")
+
+	usageGroup.POST("/", ctx.Ctl.Usage.CreateUsageController)
 }

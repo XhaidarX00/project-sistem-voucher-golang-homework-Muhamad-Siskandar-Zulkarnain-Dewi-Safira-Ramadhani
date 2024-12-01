@@ -5,13 +5,15 @@ import "gorm.io/gorm"
 type Repository struct {
 	User    UserRepository
 	Voucher VoucherRepository
-	Reedem  ReedemRepository
+	Redeem  RedeemRepository
+	Usage   UsageRepository
 }
 
 func NewRepository(db *gorm.DB) Repository {
 	return Repository{
 		User:    *NewUserRepository(db),
 		Voucher: *NewVoucherRepository(db),
-		Reedem:  *NewReedemRepository(db),
+		Redeem:  *NewRedeemRepository(db),
+		Usage:   *NewUsageRepository(db),
 	}
 }
