@@ -36,7 +36,12 @@ func (repo *UsageRepository) Create(usageInput models.Usage, voucherQuantity int
 func (repo *UsageRepository) GetByUserID(userID int) ([]models.Usage, error) {
 	var usages []models.Usage
 
-	if err := repo.DB.Preload("Voucher").Where("user_id =?", userID).Find(&usages).Error; err != nil {
+	err := repo.DB.
+		Preload("Voucher").
+		Preload("User").
+		Where("user_id = ?", userID).
+		Find(&usages).Error
+	if err != nil {
 		return nil, fmt.Errorf("failed to get usages by user ID: %w", err)
 	}
 

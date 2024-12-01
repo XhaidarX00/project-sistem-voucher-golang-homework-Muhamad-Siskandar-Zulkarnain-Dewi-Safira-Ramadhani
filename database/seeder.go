@@ -1,7 +1,6 @@
 package database
 
 import (
-	"errors"
 	"fmt"
 	"log"
 	"project-voucher-team3/models"
@@ -11,16 +10,22 @@ import (
 )
 
 func SeedDatabase(db *gorm.DB) error {
-	if err := voucherSeeder(db); err != nil {
-		return err
-	}
-	if err := redeemSeeder(db); err != nil {
-		return err
-	}
+	log.Println("Starting user seeding...")
 	if err := seedUsers(db); err != nil {
-		return err
+		return fmt.Errorf("user seeding failed: %w", err)
 	}
 
+	log.Println("Starting voucher seeding...")
+	if err := voucherSeeder(db); err != nil {
+		return fmt.Errorf("voucher seeding failed: %w", err)
+	}
+
+	log.Println("Starting redeem seeding...")
+	if err := redeemSeeder(db); err != nil {
+		return fmt.Errorf("redeem seeding failed: %w", err)
+	}
+
+	log.Println("Database seeding completed successfully.")
 	return nil
 }
 
@@ -115,8 +120,14 @@ func redeemSeeder(db *gorm.DB) error {
 
 func seedUsers(db *gorm.DB) error {
 	// Cek apakah data sudah ada
-	if err := db.First(&models.User{}).Error; err == nil {
-		return errors.New("data is not null, skiping add data users")
+	var count int64
+	if err := db.Model(&models.User{}).Count(&count).Error; err != nil {
+		return fmt.Errorf("failed to check existing users: %w", err)
+	}
+
+	if count > 0 {
+		log.Println("Users already exist, skipping seed.")
+		return nil
 	}
 
 	users := []models.User{
@@ -141,7 +152,7 @@ func seedUsers(db *gorm.DB) error {
 	}
 
 	if err := db.Create(&users).Error; err != nil {
-		log.Fatal("Error seeding users: ", err)
+		return fmt.Errorf("error seeding users: %w", err)
 	}
 
 	return nil

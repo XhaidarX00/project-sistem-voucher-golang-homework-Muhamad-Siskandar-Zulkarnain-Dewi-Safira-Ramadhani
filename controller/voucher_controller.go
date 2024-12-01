@@ -161,3 +161,21 @@ func (ctrl *VoucherController) GetVoucherWithMinRatePoint(c *gin.Context) {
 	ctrl.logger.Info("Get vouchers successfully")
 	utils.ResponseOK(c, vouchers, "Get vouchers successfully")
 }
+
+func (ctrl *VoucherController) GetUsageHistoryController(c *gin.Context) {
+	voucherCode := c.Param("voucher_code")
+	if voucherCode == "" {
+		ctrl.logger.Error("voucher code is empty")
+		utils.ResponseError(c, "EMPTY_PARAM", "voucher code is empty", http.StatusBadRequest)
+		return
+	}
+
+	voucher, err := ctrl.service.GetVoucherUsageHistory(voucherCode)
+	if err != nil {
+		ctrl.logger.Error("Failed to get voucher usage history", zap.Error(err))
+		utils.ResponseError(c, "INTERNAL_SERVER_ERROR", err.Error(), http.StatusInternalServerError)
+		return
+	}
+	ctrl.logger.Info("Voucher usage history retrieved successfully")
+	utils.ResponseOK(c, voucher, "voucher usage history retrieved successfully")
+}
