@@ -11,14 +11,16 @@ import (
 )
 
 func SeedDatabase(db *gorm.DB) error {
-	err := voucherSeeder(db)
-	if err != nil {
+	if err := voucherSeeder(db); err != nil {
 		return err
 	}
-	err = redeemSeeder(db)
-	if err != nil {
+	if err := redeemSeeder(db); err != nil {
 		return err
 	}
+	if err := seedUsers(db); err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -47,6 +49,7 @@ func voucherSeeder(db *gorm.DB) error {
 			EndDate:         time.Date(2024, 12, 31, 23, 59, 59, 0, time.UTC),
 			ApplicableAreas: `["Jakarta", "Surabaya", "Bandung"]`,
 			MinRatePoint:    50,
+			Quantity:        100,
 		},
 		{
 			VoucherName:     "10% Off Electronics",
@@ -61,6 +64,7 @@ func voucherSeeder(db *gorm.DB) error {
 			EndDate:         time.Date(2024, 11, 30, 23, 59, 59, 0, time.UTC),
 			ApplicableAreas: `["Jakarta", "Medan"]`,
 			MinRatePoint:    100,
+			Quantity:        50,
 		},
 	}
 	if err := db.Create(&vouchers).Error; err != nil {
@@ -109,7 +113,7 @@ func redeemSeeder(db *gorm.DB) error {
 	return nil
 }
 
-func SeedUsers(db *gorm.DB) error {
+func seedUsers(db *gorm.DB) error {
 	// Cek apakah data sudah ada
 	if err := db.First(&models.User{}).Error; err == nil {
 		return errors.New("data is not null, skiping add data users")
