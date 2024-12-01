@@ -13,9 +13,13 @@ import (
 )
 
 func ConnectDB(cfg config.Config) (*gorm.DB, error) {
-	// Configure the database logger
+	// Validate configuration
+	if cfg.DBHost == "" || cfg.DBPort == "" || cfg.DBUser == "" || cfg.DBName == "" || cfg.DBPassword == "" {
+		return nil, fmt.Errorf("database configuration is incomplete")
+	}
+
 	newLogger := logger.New(
-		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
+		log.New(os.Stdout, "\r\n", log.LstdFlags),
 		logger.Config{
 			SlowThreshold:             time.Second, // Slow SQL threshold
 			LogLevel:                  logger.Info, // Log level
@@ -38,10 +42,12 @@ func ConnectDB(cfg config.Config) (*gorm.DB, error) {
 		return nil, fmt.Errorf("failed to migrate database: %v", err)
 	}
 
+	// Seed initial database data
 	if err := SeedDatabase(db); err != nil {
 		return nil, fmt.Errorf("failed to seed database: %v", err)
 	}
 
+	fmt.Println("Database connected successfully")
 	return db, nil
 }
 

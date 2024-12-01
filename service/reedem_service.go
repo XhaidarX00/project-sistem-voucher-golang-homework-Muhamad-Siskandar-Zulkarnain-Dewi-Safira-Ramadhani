@@ -3,23 +3,43 @@ package service
 import (
 	"project-voucher-team3/models"
 	"project-voucher-team3/repository"
+	"time"
 )
 
 type RedeemService interface {
-	GetAllUserRedeems(userID int, voucherFilter models.Voucher) ([]models.Redeem, error)
+	GetActiveUserRedeems(userID int, voucherFilter models.Voucher) ([]models.Redeem, error)
 	RedeemVoucher(user *models.User, voucherID int) (models.Redeem, error)
 }
 
 type redeemService struct {
-	Repo repository.ReedemRepository
+	Repo repository.RedeemRepository
 }
 
-func NewRedeemService(repo repository.ReedemRepository) RedeemService {
+func NewRedeemService(repo repository.RedeemRepository) RedeemService {
 	return &redeemService{repo}
 }
 
-func (s *redeemService) GetAllUserRedeems(userID int, voucherFilter models.Voucher) ([]models.Redeem, error) {
-	return s.Repo.GetUserRedeem(userID, voucherFilter)
+func (s *redeemService) GetActiveUserRedeems(userID int, voucherFilter models.Voucher) ([]models.Redeem, error) {
+	redeems, err := s.Repo.GetUserRedeemByType(userID, voucherFilter)
+	if err != nil {
+		return nil, err
+	}
+	now := time.Now()
+	activeRedeems := []models.Redeem{}
+	for _, redeem := range redeems {
+		if redeem.Voucher.ID != 0 && redeem.Voucher.StartDate.Before(now) && redeem.Voucher.EndDate.After(now) {
+			activeRedeems = append(activeRedeems, redeem)
+		}
+	}
+	return activeRedeems, nil
+}
+
+func (s *redeemService) GetAllUserRedeems(userID int) ([]models.Redeem, error) {
+	redeems, err := s.Repo.GetAllUserRedeems(userID)
+	if err != nil {
+		return nil, err
+	}
+	return redeems, nil
 }
 
 func (s *redeemService) RedeemVoucher(user *models.User, voucherID int) (models.Redeem, error) {

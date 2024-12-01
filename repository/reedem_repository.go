@@ -37,7 +37,28 @@ func (repo *RedeemRepository) GetUserRedeem(userID int, voucherFilter models.Vou
 	return activeRedeems, nil
 }
 
-func (repo *ReedemRepository) RedeemVoucher(user *models.User, voucherID int) (models.Redeem, error) {
+func (repo *RedeemRepository) GetUserRedeemByType(userID int, voucherFilter models.Voucher) ([]models.Redeem, error) {
+	var redeems []models.Redeem
+
+	err := repo.DB.Preload("Voucher", "voucher_type = ?", voucherFilter.VoucherType).
+		Where("user_id = ?", userID).
+		Find(&redeems).Error
+	if err != nil {
+		return nil, err
+	}
+	return redeems, nil
+}
+
+func (repo *RedeemRepository) GetAllUserRedeems(userID int) ([]models.Redeem, error) {
+	var redeems []models.Redeem
+	err := repo.DB.Where("user_id =?", userID).Find(&redeems).Error
+	if err != nil {
+		return nil, err
+	}
+	return redeems, nil
+}
+
+func (repo *RedeemRepository) RedeemVoucher(user *models.User, voucherID int) (models.Redeem, error) {
 	var voucher models.Voucher
 	if err := repo.DB.First(&voucher, voucherID).Error; err != nil {
 		return models.Redeem{}, errors.New("voucher not found")

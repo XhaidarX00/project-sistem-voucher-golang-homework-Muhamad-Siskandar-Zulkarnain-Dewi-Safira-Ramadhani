@@ -14,5 +14,6 @@ type User struct {
 	UpdatedAt time.Time `gorm:"autoUpdateTime"`
 
 	// Relationships
-	Redeems []Redeem `gorm:"foreignKey:UserID"`
+	Redeems []Redeem `gorm:"foreignKey:UserID" json:"redeems,omitempty"`
+	Usages  []Usage  `gorm:"foreignKey:UserID" json:"usages,omitempty"`
 }

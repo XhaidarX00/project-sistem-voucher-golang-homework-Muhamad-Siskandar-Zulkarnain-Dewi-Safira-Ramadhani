@@ -52,7 +52,7 @@ func (s *voucherService) ValidateVoucher(voucherInput models.VoucherDTO) (*model
 }
 
 func (s *voucherService) GetVoucherUsageHistory(voucherCode string) (*models.Voucher, error) {
-	return s.Repo.GetUsageByVoucherCode(voucherCode)
+	return s.Repo.GetUserUsageByVoucherCode(voucherCode)
 }
 
 func (s *voucherService) CreateVoucher(voucher *models.Voucher) error {
