@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "94467c8a-a486-4431-ab06-b64da1a20d8b",
+		"_postman_id": "d2cadc83-a2d9-4a17-a869-00244811de94",
 		"name": "Voucher-App",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "31738017"
+		"_exporter_id": "33749038"
 	},
 	"item": [
 		{
@@ -30,7 +30,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"voucher_name\": \"50 Points Redemption\",\r\n  \"voucher_code\": \"REDEEM5000\",\r\n  \"voucher_type\": \"redeem_point\",\r\n  \"description\": \"Redeem 50 points for a discount on your next purchase\",\r\n  \"voucher_category\": \"discount\",\r\n  \"discount_amount\": 5000.0,\r\n  \"min_purchase\": 0.0,\r\n  \"payment_method\": \"points\",\r\n  \"start_date\": \"2024-12-01T00:00:00Z\",\r\n  \"end_date\": \"2024-12-20T23:59:59Z\",\r\n  \"applicable_areas\": \"[\\\"Online Store\\\", \\\"Mobile App\\\"]\",\r\n  \"min_rate_point\": 50\r\n}\r\n",
+					"raw": "{\r\n  \"voucher_name\": \"50 Points Redemption\",\r\n  \"voucher_code\": \"ECV002\",\r\n  \"voucher_type\": \"ecommerce\",\r\n  \"description\": \"Redeem 50 points for a discount on your next purchase\",\r\n  \"voucher_category\": \"discount\",\r\n  \"discount_amount\": 20.0,\r\n  \"min_purchase\": 5000.0,\r\n  \"payment_method\": \"points\",\r\n  \"start_date\": \"2024-12-01T00:00:00Z\",\r\n  \"end_date\": \"2024-12-27T23:59:59Z\",\r\n  \"applicable_areas\": \"[\\\"Yogyakarta\\\", \\\"Surabaya\\\"]\",\r\n  \"min_rate_point\": 5\r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -56,7 +56,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"id\": 3,\r\n  \"voucher_name\": \"555 Points Redemption\",\r\n  \"voucher_code\": \"REDEEM555\",\r\n  \"voucher_type\": \"redeem_point\",\r\n  \"description\": \"Redeem 555 points for a discount on your next purchase\",\r\n  \"voucher_category\": \"discount\",\r\n  \"discount_amount\": 0.0,\r\n  \"min_purchase\": 0.0,\r\n  \"payment_method\": \"points\",\r\n  \"start_date\": \"2024-12-01T00:00:00Z\",\r\n  \"end_date\": \"2024-12-31T23:59:59Z\",\r\n  \"applicable_areas\": \"[\\\"Online Store\\\", \\\"Mobile App\\\"]\",\r\n  \"min_rate_point\": 555\r\n}\r\n",
+					"raw": "{\r\n  \"id\": 3,\r\n  \"voucher_name\": \"555 Points Redemption\",\r\n  \"voucher_code\": \"REDEEM555\",\r\n  \"voucher_type\": \"redeem_point\",\r\n  \"description\": \"Redeem 555 points for a discount on your next purchase\",\r\n  \"voucher_category\": \"discount\",\r\n  \"discount_amount\": 0.0,\r\n  \"min_purchase\": 0.0,\r\n  \"payment_method\": \"points\",\r\n  \"start_date\": \"2024-12-01T00:00:00Z\",\r\n  \"end_date\": \"2024-12-31T23:59:59Z\",\r\n  \"applicable_areas\": \"[\\\"Jakarta\\\", \\\"Bali\\\"]\",\r\n  \"min_rate_point\": 555\r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -82,13 +82,13 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/voucher/5",
+					"raw": "{{base_url}}/voucher/4",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"voucher",
-						"5"
+						"4"
 					]
 				}
 			},
@@ -126,7 +126,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/redeem/user/1/4",
+					"raw": "{{base_url}}/redeem/user/1/6",
 					"host": [
 						"{{base_url}}"
 					],
@@ -134,7 +134,139 @@
 						"redeem",
 						"user",
 						"1",
-						"4"
+						"6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "history",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/voucher/history/ECV002",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"voucher",
+						"history",
+						"ECV002"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user redeem history",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/user/redeem/1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"user",
+						"redeem",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user usage history",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/user/usage/1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"user",
+						"usage",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "usage",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"user_id\": 1,\r\n    \"voucher_input\": {\r\n    \"voucher_code\": \"ECV002\",\r\n    \"total_transactions\": 270000.00,\r\n    \"total_shipping_cost\": 12000.00,\r\n    \"transaction_date\": \"2024-12-02\",\r\n    \"payment_method\": \"points\",\r\n    \"area\": \"Yogyakarta\"\r\n}\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/usage",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"usage"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "validate",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"voucher_code\": \"ECV002\",\r\n    \"total_transactions\": 270000.00,\r\n    \"total_shipping_cost\": 12000.00,\r\n    \"transaction_date\": \"2024-12-02\",\r\n    \"payment_method\": \"points\",\r\n    \"area\": \"Yogyakarta\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/voucher/validate",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"voucher",
+						"validate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get user redeem",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/redeem/1/ecommerce",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"redeem",
+						"1",
+						"ecommerce"
 					]
 				}
 			},
