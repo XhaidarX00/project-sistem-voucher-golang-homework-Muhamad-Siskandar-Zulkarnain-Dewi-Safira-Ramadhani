@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 	"project-voucher-team3/models"
 	"project-voucher-team3/repository"
 	"project-voucher-team3/utils"
@@ -15,6 +16,7 @@ type VoucherService interface {
 	UpdateVoucher(voucher *models.Voucher) error
 	GetVouchers(filter map[string]interface{}) ([]models.Voucher, error)
 	GetVoucherWithMinRatePoint(ratePoint int) ([]map[string]interface{}, error)
+	GetVoucherUsageHistory(voucherCode string) (*models.Voucher, error)
 }
 
 type voucherService struct {
@@ -28,17 +30,29 @@ func NewVoucherService(repo repository.VoucherRepository) VoucherService {
 func (s *voucherService) ValidateVoucher(voucherInput models.VoucherDTO) (*models.ValidateVoucherResponse, error) {
 	voucher, err := s.Repo.GetVoucherByCode(voucherInput.VoucherCode)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to retrieve voucher: %w", err)
 	}
-	customDateFormat := "2006-01-02"
-	str := strings.Trim(string(voucherInput.TransactionDate), `"`)
-	parsedTime, err := time.Parse(customDateFormat, str)
+
+	// Parse transaction date
+	const customDateFormat = "2006-01-02"
+	transactionDateStr := strings.Trim(voucherInput.TransactionDate, `"`)
+	parsedTransactionDate, err := time.Parse(customDateFormat, transactionDateStr)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("invalid transaction date format: %w", err)
 	}
-	voucherInput.FormatedTransactionDate = parsedTime
-	result, err := utils.ValidateVoucher(voucherInput, voucher)
-	return &result, err
+	voucherInput.FormatedTransactionDate = parsedTransactionDate
+
+	// Validate the voucher
+	validationResult, err := utils.ValidateVoucher(voucherInput, voucher)
+	if err != nil {
+		return nil, fmt.Errorf("voucher validation failed: %w", err)
+	}
+
+	return &validationResult, nil
+}
+
+func (s *voucherService) GetVoucherUsageHistory(voucherCode string) (*models.Voucher, error) {
+	return s.Repo.GetUserUsageByVoucherCode(voucherCode)
 }
 
 func (s *voucherService) CreateVoucher(voucher *models.Voucher) error {

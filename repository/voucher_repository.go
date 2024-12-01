@@ -2,6 +2,7 @@ package repository
 
 import (
 	"errors"
+	"fmt"
 	"project-voucher-team3/models"
 	"time"
 
@@ -78,4 +79,26 @@ func (r *VoucherRepository) GetVoucherWithMinRatePoint(ratePoint int) ([]map[str
 		return nil, result.Error
 	}
 	return vouchers, nil
+}
+
+func (repo *VoucherRepository) GetUserUsageByVoucherCode(voucherCode string) (*models.Voucher, error) {
+	if voucherCode == "" {
+		return nil, fmt.Errorf("voucher code cannot be empty")
+	}
+
+	var voucher models.Voucher
+
+	err := repo.DB.
+		Preload("Usages.User"). // Preload nested relations in one step
+		Where("voucher_code = ?", voucherCode).
+		First(&voucher).Error
+
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, nil // Return nil if no record is found without an error
+		}
+		return nil, fmt.Errorf("failed to fetch voucher by code %s: %w", voucherCode, err)
+	}
+
+	return &voucher, nil
 }

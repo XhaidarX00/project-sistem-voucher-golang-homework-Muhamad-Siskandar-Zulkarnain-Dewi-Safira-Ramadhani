@@ -1,7 +1,6 @@
 package database
 
 import (
-	"errors"
 	"fmt"
 	"log"
 	"project-voucher-team3/models"
@@ -11,14 +10,22 @@ import (
 )
 
 func SeedDatabase(db *gorm.DB) error {
-	err := voucherSeeder(db)
-	if err != nil {
-		return err
+	log.Println("Starting user seeding...")
+	if err := seedUsers(db); err != nil {
+		return fmt.Errorf("user seeding failed: %w", err)
 	}
-	err = redeemSeeder(db)
-	if err != nil {
-		return err
+
+	log.Println("Starting voucher seeding...")
+	if err := voucherSeeder(db); err != nil {
+		return fmt.Errorf("voucher seeding failed: %w", err)
 	}
+
+	log.Println("Starting redeem seeding...")
+	if err := redeemSeeder(db); err != nil {
+		return fmt.Errorf("redeem seeding failed: %w", err)
+	}
+
+	log.Println("Database seeding completed successfully.")
 	return nil
 }
 
@@ -47,6 +54,7 @@ func voucherSeeder(db *gorm.DB) error {
 			EndDate:         time.Date(2024, 12, 31, 23, 59, 59, 0, time.UTC),
 			ApplicableAreas: `["Jakarta", "Surabaya", "Bandung"]`,
 			MinRatePoint:    50,
+			Quantity:        100,
 		},
 		{
 			VoucherName:     "10% Off Electronics",
@@ -61,6 +69,7 @@ func voucherSeeder(db *gorm.DB) error {
 			EndDate:         time.Date(2024, 11, 30, 23, 59, 59, 0, time.UTC),
 			ApplicableAreas: `["Jakarta", "Medan"]`,
 			MinRatePoint:    100,
+			Quantity:        50,
 		},
 	}
 	if err := db.Create(&vouchers).Error; err != nil {
@@ -109,10 +118,16 @@ func redeemSeeder(db *gorm.DB) error {
 	return nil
 }
 
-func SeedUsers(db *gorm.DB) error {
+func seedUsers(db *gorm.DB) error {
 	// Cek apakah data sudah ada
-	if err := db.First(&models.User{}).Error; err == nil {
-		return errors.New("data is not null, skiping add data users")
+	var count int64
+	if err := db.Model(&models.User{}).Count(&count).Error; err != nil {
+		return fmt.Errorf("failed to check existing users: %w", err)
+	}
+
+	if count > 0 {
+		log.Println("Users already exist, skipping seed.")
+		return nil
 	}
 
 	users := []models.User{
@@ -137,7 +152,7 @@ func SeedUsers(db *gorm.DB) error {
 	}
 
 	if err := db.Create(&users).Error; err != nil {
-		log.Fatal("Error seeding users: ", err)
+		return fmt.Errorf("error seeding users: %w", err)
 	}
 
 	return nil

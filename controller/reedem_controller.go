@@ -21,10 +21,16 @@ func NewRedeemController(service service.RedeemService, user service.UserService
 	return &RedeemController{service, user, logger}
 }
 
-func (ctrl *RedeemController) GetUserRedeemVoucherController(c *gin.Context) {
-	userID := 1
+func (ctrl *RedeemController) GetUserRedeemByTypeVoucherController(c *gin.Context) {
+	userIDParam := c.Param("user_id")
+	userID, err := strconv.Atoi(userIDParam)
+	if err != nil {
+		ctrl.logger.Error("Invalid user ID", zap.Error(err))
+		utils.ResponseError(c, "INVALID_ID", "Invalid user ID", http.StatusBadRequest)
+		return
+	}
 
-	voucherType := c.Param("vourcher-type")
+	voucherType := c.Param("voucher_type")
 	if voucherType == "" {
 		ctrl.logger.Error("voucher type is empty")
 		utils.ResponseError(c, "EMPTY_PARAM", "voucher type is empty", http.StatusBadRequest)
@@ -33,7 +39,7 @@ func (ctrl *RedeemController) GetUserRedeemVoucherController(c *gin.Context) {
 	voucherFilter := models.Voucher{
 		VoucherType: voucherType,
 	}
-	userRedeem, err := ctrl.service.GetAllUserRedeems(userID, voucherFilter)
+	userRedeem, err := ctrl.service.GetActiveUserRedeems(userID, voucherFilter)
 	if err != nil {
 		ctrl.logger.Error("Failed to get user redeem vouchers", zap.Error(err))
 		utils.ResponseError(c, "INTERNAL_SERVER_ERROR", err.Error(), http.StatusInternalServerError)
