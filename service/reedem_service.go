@@ -8,6 +8,7 @@ import (
 
 type RedeemService interface {
 	GetActiveUserRedeems(userID int, voucherFilter models.Voucher) ([]models.Redeem, error)
+	GetAllUserRedeems(userID int) ([]models.Redeem, error)
 	RedeemVoucher(user *models.User, voucherID int) (models.Redeem, error)
 }
 
